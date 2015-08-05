@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		171D4A6E1B6D55C700CFCF25 /* CRRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171D4A6D1B6D55C700CFCF25 /* CRRequest.swift */; };
+		171D4A731B6D90B800CFCF25 /* CRMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171D4A721B6D90B800CFCF25 /* CRMapper.swift */; };
+		171D4A781B6D94A400CFCF25 /* MapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171D4A771B6D94A400CFCF25 /* MapperTests.swift */; };
+		171D4A7A1B6DB6D100CFCF25 /* MappingOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171D4A791B6DB6D100CFCF25 /* MappingOperator.swift */; };
 		268068E21B47080D0076C226 /* CRUberProductsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 268068E11B47080C0076C226 /* CRUberProductsRequest.swift */; };
 		26951C251AFB401A007B0E07 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26951C241AFB401A007B0E07 /* AppDelegate.swift */; };
 		26951C271AFB401A007B0E07 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26951C261AFB401A007B0E07 /* ViewController.swift */; };
@@ -30,6 +33,9 @@
 
 /* Begin PBXFileReference section */
 		171D4A6D1B6D55C700CFCF25 /* CRRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CRRequest.swift; sourceTree = "<group>"; };
+		171D4A721B6D90B800CFCF25 /* CRMapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CRMapper.swift; sourceTree = "<group>"; };
+		171D4A771B6D94A400CFCF25 /* MapperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapperTests.swift; sourceTree = "<group>"; };
+		171D4A791B6DB6D100CFCF25 /* MappingOperator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MappingOperator.swift; sourceTree = "<group>"; };
 		268068E11B47080C0076C226 /* CRUberProductsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CRUberProductsRequest.swift; sourceTree = "<group>"; };
 		26951C1F1AFB401A007B0E07 /* Crust.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Crust.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		26951C231AFB401A007B0E07 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -65,6 +71,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		171D4A711B6D902300CFCF25 /* Mapper */ = {
+			isa = PBXGroup;
+			children = (
+				171D4A721B6D90B800CFCF25 /* CRMapper.swift */,
+				171D4A791B6DB6D100CFCF25 /* MappingOperator.swift */,
+			);
+			path = Mapper;
+			sourceTree = "<group>";
+		};
+		171D4A741B6D937B00CFCF25 /* Mapper */ = {
+			isa = PBXGroup;
+			children = (
+				171D4A771B6D94A400CFCF25 /* MapperTests.swift */,
+			);
+			path = Mapper;
+			sourceTree = "<group>";
+		};
 		268068E01B4702A80076C226 /* API */ = {
 			isa = PBXGroup;
 			children = (
@@ -98,6 +121,7 @@
 			isa = PBXGroup;
 			children = (
 				268068E01B4702A80076C226 /* API */,
+				171D4A711B6D902300CFCF25 /* Mapper */,
 				26951C241AFB401A007B0E07 /* AppDelegate.swift */,
 				26951C261AFB401A007B0E07 /* ViewController.swift */,
 				26951C281AFB401B007B0E07 /* Main.storyboard */,
@@ -120,6 +144,7 @@
 			isa = PBXGroup;
 			children = (
 				26951C3A1AFB401B007B0E07 /* CrustTests.swift */,
+				171D4A741B6D937B00CFCF25 /* Mapper */,
 				26951C381AFB401B007B0E07 /* Supporting Files */,
 			);
 			path = CrustTests;
@@ -306,6 +331,8 @@
 				268068E21B47080D0076C226 /* CRUberProductsRequest.swift in Sources */,
 				26951C271AFB401A007B0E07 /* ViewController.swift in Sources */,
 				26951C251AFB401A007B0E07 /* AppDelegate.swift in Sources */,
+				171D4A7A1B6DB6D100CFCF25 /* MappingOperator.swift in Sources */,
+				171D4A731B6D90B800CFCF25 /* CRMapper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -313,6 +340,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				171D4A781B6D94A400CFCF25 /* MapperTests.swift in Sources */,
 				26951C3B1AFB401B007B0E07 /* CrustTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -54,10 +54,12 @@ code_sign_if_enabled() {
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework 'Pods-Crust/Alamofire.framework'
   install_framework 'Pods-Crust/ObjectMapper.framework'
+  install_framework 'Pods-Crust/Runes.framework'
   install_framework 'Pods-Crust/SwiftyJSON.framework'
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework 'Pods-Crust/Alamofire.framework'
   install_framework 'Pods-Crust/ObjectMapper.framework'
+  install_framework 'Pods-Crust/Runes.framework'
   install_framework 'Pods-Crust/SwiftyJSON.framework'
 fi

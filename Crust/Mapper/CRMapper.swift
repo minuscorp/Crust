@@ -1,17 +1,99 @@
 import SwiftyJSON
+import Runes
 
-public protocol Mappable {
-    static func newInstance() -> Mappable
-    mutating func mapping(map: Map)
+public enum Result<T> {
+    case Value(T)
+    case Error(NSError)
 }
 
-public enum MappingType {
+public enum MappingDirection {
     case FromJSON
     case ToJSON
 }
 
+public protocol CRMappingKey {
+    var keyPath: String { get }
+}
+
+extension String : CRMappingKey {
+    public var keyPath: String {
+        return self
+    }
+}
+
+public enum CRMapping : CRMappingKey {
+    case ForeignKey(CRMappingKey)
+    case Transform(CRMappingKey, String) // TODO: Second element should be Transform type to define later
+    
+    public var keyPath: String {
+        switch self {
+            
+        case .ForeignKey(let keyPath):
+            return keyPath.keyPath
+            
+        case .Transform(let keyPath, _):
+            return keyPath.keyPath
+        }
+    }
+}
+
+public class CRMappingContext {
+    public var JSON: SwiftyJSON.JSON
+    public var dir: MappingDirection
+    public var result: Result<Mappable>
+    
+    init(withObjectToJSON object: Mappable) {
+        self.dir = MappingDirection.ToJSON
+        self.result = Result.Value(object)
+        self.JSON = SwiftyJSON.JSON([:])
+    }
+    
+    init(withJSONToObject json: SwiftyJSON.JSON) {
+        self.dir = MappingDirection.FromJSON
+        self.result = setupResultToObject()
+    }
+    
+    func setupResultToObject() -> Result<Mappable> {
+        
+    }
+    
+    /// Sets the current mapper value and key.
+    /// The Key paramater can be a period separated string (ex. "distance.value") to access sub objects.
+    public subscript(key: String) -> Map {
+        
+        let keyPath = key.componentsSeparatedByString(".").map { $0 as JSONSubscriptType }
+        return valueForKeyPathComponents(keyPath, dictionary: SwiftyJSON.JSON)
+    }
+}
+
+public protocol Mappable {
+    static func newInstance() -> Mappable
+    mutating func mapping(context: CRMappingContext)
+    func foreignKeys() -> Array<CRMappingKey>
+}
+
+struct User : Mappable {
+    var derp: String
+    var blah: JSONSubscriptType
+    
+    static func newInstance() -> Mappable {
+        return User(derp: "", blah: "")
+    }
+    
+    func foreignKeys() -> Array<CRMappingKey> {
+        return [ "Blah" ]
+    }
+    
+    mutating func mapping(context: CRMappingContext) {
+        
+        blah <- CRMapping.Transform("Blah", "Blah") >*<
+        derp <- "Derp" >*<
+        context
+    }
+}
+
 /// A class used for holding mapping data
-public final class Map : CRMapping {
+public final class Map : CRMappingKey {
     public let mappingType: MappingType
     
     var JSON: SwiftyJSON.JSON
@@ -57,32 +139,6 @@ private func valueForKeyPathComponents(components: [ JSONSubscriptType ], dictio
 
     let json = dictionary[Array(components)]
     return json.rawValue
-}
-
-public protocol CRMapping {
-    var keyPath: String { get }
-}
-
-extension String : CRMapping {
-    public var keyPath: String {
-        return self
-    }
-}
-
-enum CRMappingType : CRMapping {
-    case ForeignKey(CRMapping)
-    case Transform(CRMapping, String) // TODO: Second element should be Transform type to define later
-    
-    var keyPath: String {
-        switch self {
-            
-        case .ForeignKey(let keyPath):
-            return keyPath.keyPath
-            
-        case .Transform(let keyPath, _):
-            return keyPath.keyPath
-        }
-    }
 }
 
 protocol MapperType {

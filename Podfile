@@ -5,6 +5,7 @@ use_frameworks!
 pod 'Alamofire', :git => 'https://github.com/Alamofire/Alamofire.git', :branch => 'swift-2.0'
 pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git', :branch => 'xcode7'
 pod 'ObjectMapper', :git => 'https://github.com/Hearst-DD/ObjectMapper.git', :branch => 'swift-2.0'
+pod 'Runes', :git => 'https://github.com/thoughtbot/Runes.git', :branch => 'swift-2.0'
 
 target 'Crust' do
 end

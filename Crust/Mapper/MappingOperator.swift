@@ -1,4 +1,5 @@
 import SwiftyJSON
+import Runes
 
 /**
 * This file defines a new operator which is used to create a mapping between an object and a JSON key value.
@@ -6,16 +7,27 @@ import SwiftyJSON
 * This provides a way to add custom logic to handle specific types of objects
 */
 
-infix operator <- {}
+infix operator >*< { associativity right }
+
+public func >*< <T, U>(left: T, right: U) -> (T, U) {
+    return (left, right)
+}
+
+public func >*< <U>(left: CRMapping, right: U) -> (CRMappingKey, U) {
+    return (left, right)
+}
+
+infix operator <- { associativity right }
 
 // MARK:- Objects with Basic types
 
 /// Object of Basic type
-public func <- <T>(inout left: T, right: CRMapping) {
-    if right.mappingType == MappingType.FromJSON {
-        FromJSON.basicType(&left, object: right.value())
-    } else {
-        ToJSON.basicType(left, key: right.currentKey!, dictionary: &right.JSONDictionary)
+public func <- <T, C: CRMappingContext>(inout left: T, right:(map: CRMappingKey, context: C)) -> C {
+    switch right.context.dir {
+    case .FromJSON:
+        break
+    case .ToJSON:
+        break
     }
 }
 

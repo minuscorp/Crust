@@ -13,7 +13,7 @@ public func >*< <T, U>(left: T, right: U) -> (T, U) {
     return (left, right)
 }
 
-public func >*< <U>(left: CRMapping, right: U) -> (CRMappingKey, U) {
+public func >*< <T: CRMappingKey, U>(left: T, right: U) -> (CRMappingKey, U) {
     return (left, right)
 }
 

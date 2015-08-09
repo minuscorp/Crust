@@ -1,4 +1,5 @@
 import UIKit
+import SwiftyJSON
 
 private let kDefaultLatitude = 37.775
 private let kDefaultLongitude = -122.0
@@ -29,7 +30,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             endLongitude: kDefaultLongitude)
         uberPromotionsRequest.send()
         
+        testMapper()
+        
         return true
+    }
+    
+    func testMapper() {
+        let key = "1.2"
+        let array = [ "derp", "blah", 1 ]
+        let json:JSON = [:]
+        print(json)
+        let result = mapToJson(json, fromField: array, viaKey: key)
+        
+        switch result {
+        case .Value(let json):
+            print(json)
+        case .Error(let error):
+            print(error)
+        }
     }
 
     func applicationWillResignActive(application: UIApplication) {

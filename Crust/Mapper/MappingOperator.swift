@@ -22,7 +22,7 @@ infix operator <- { associativity right }
 // MARK:- Objects with Basic types
 
 /// Object of Basic type
-public func <- <T: CRFieldType, C: CRMappingContext>(inout attribute: T, map:(key: CRMappingKey, context: C)) -> C {
+public func <- <T: CRFieldType, C: CRMappingContext>(inout field: T, map:(key: CRMappingKey, context: C)) -> C {
     
     if case .Error(_)? = map.context.result {
         return map.context
@@ -30,21 +30,83 @@ public func <- <T: CRFieldType, C: CRMappingContext>(inout attribute: T, map:(ke
     
     switch map.context.dir {
     case .ToJSON:
-        break
+        let json = map.context.json
+        let result = mapToJson(json, fromField: field, viaKey: map.key)
+        
+        switch result {
+        case .Value(let json):
+            map.context.json = json
+            map.context.result = Result.Value(json)
+        case .Error(let error):
+            map.context.result = Result.Error(error)
+        }
     case .FromJSON:
         let baseJSON = map.context.json[map.key]
-        map.context.result = mapFromJson(baseJSON, toField: &attribute)
-        break
+        map.context.result = mapFromJson(baseJSON, toField: &field)
     }
     
     return map.context
 }
 
-func mapFromJson<T: CRFieldType>(json: JSON, inout toField field: T) -> Result<Any> {
-    
-    let error: NSError = NSError(domain: "CRMappingDomain", code: -1, userInfo: nil)
+func mapToJson<T: CRFieldType>(var json: JSON, fromField field: T, viaKey key: CRMappingKey) -> Result<JSON> {
     
     switch field {
+    case is Bool:
+        json[key] = JSON(field as! Bool)
+    case is Int:
+        json[key] = JSON(field as! Int)
+    case is NSNumber:
+        json[key] = JSON(field as! NSNumber)
+    case is String:
+        json[key] = JSON(field as! String)
+    case is Double:
+        json[key] = JSON(field as! Double)
+    case is Array<CRFieldType>:
+        // TODO: Iterate through each element and wrap as JSON and add to our json.
+//        json[key] = JSON(field as! Array)
+        break
+    case is Dictionary<String, CRFieldType>:
+        // TODO: Iterate through each element and wrap as JSON and add to our json.
+//        json[key] = JSON(field as! Dictionary)
+        break
+    }
+    
+    if let error = json.error {
+        // TODO: Wrap this error in our own error.
+        return Result.Error(error)
+    }
+    
+    return Result.Value(json)
+}
+
+/// Map to JSON with field as optional type.
+func mapToJson<T: CRFieldType>(var json: JSON, fromField field: T?, viaKey key: CRMappingKey) -> Result<JSON> {
+    
+    if let field = field {
+        return mapToJson(json, fromField: field, viaKey: key)
+    } else {
+        json[key] = JSON(NSNull)
+        return Result.Value(json)
+    }
+}
+
+// TODO: Have a map for optional fields. .Null will map to `nil`.
+func mapFromJson<T: CRFieldType>(json: JSON, inout toField field: T) -> Result<Any>? {
+    
+    // TODO: Clarify our errors.
+    let error: NSError = NSError(domain: "CRMappingDomain", code: -1, userInfo: nil)
+    
+    if case .Unknown = json.type {
+        return Result.Error(error)
+    }
+    
+    switch field {
+    case is Bool:
+        if let rawBool = json.bool {
+            field = rawBool as! T
+        } else {
+            return Result.Error(error)
+        }
     case is Int:
         if let rawInt = json.number {
             field = rawInt as! T
@@ -82,6 +144,8 @@ func mapFromJson<T: CRFieldType>(json: JSON, inout toField field: T) -> Result<A
             return Result.Error(error)
         }
     }
+    
+    return nil
 }
 
 /// Optional object of basic type

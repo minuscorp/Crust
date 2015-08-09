@@ -17,7 +17,7 @@ public protocol CRMappingKey {
 
 public protocol CRFieldType { }
 
-extension Set : CRFieldType { }
+extension Bool : CRFieldType { }
 
 extension NSNumber : CRFieldType { }
 
@@ -59,9 +59,15 @@ public enum CRMapping : CRMappingKey {
 
 extension JSON {
     subscript(key: CRMappingKey) -> JSON {
-        let components = key.keyPath.componentsSeparatedByString(".").map { $0 as JSONSubscriptType }
-        let json = self[Array(components)]
-        return json
+        get {
+            let components = key.keyPath.componentsSeparatedByString(".").map { $0 as JSONSubscriptType }
+            let json = self[Array(components)]
+            return json
+        }
+        set {
+            let components = key.keyPath.componentsSeparatedByString(".").map { $0 as JSONSubscriptType }
+            self[Array(components)] = newValue
+        }
     }
 }
 

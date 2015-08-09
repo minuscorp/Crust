@@ -7,7 +7,7 @@ public enum Result<T> {
 }
 
 public enum MappingDirection {
-    case ToObject
+    case FromJSON
     case ToJSON
 }
 
@@ -15,7 +15,27 @@ public protocol CRMappingKey {
     var keyPath: String { get }
 }
 
-extension String : CRMappingKey {
+public protocol CRFieldType { }
+
+extension Set : CRFieldType { }
+
+extension NSNumber : CRFieldType { }
+
+extension NSNull : CRFieldType { }
+
+extension Dictionary : CRFieldType { }
+
+extension Array : CRFieldType { }
+
+extension Double : CRFieldType { }
+
+extension Int : CRMappingKey, CRFieldType {
+    public var keyPath: String {
+        return String(self)
+    }
+}
+
+extension String : CRMappingKey, CRFieldType {
     public var keyPath: String {
         return self
     }
@@ -37,6 +57,14 @@ public enum CRMapping : CRMappingKey {
     }
 }
 
+extension JSON {
+    subscript(key: CRMappingKey) -> JSON {
+        let components = key.keyPath.componentsSeparatedByString(".").map { $0 as JSONSubscriptType }
+        let json = self[Array(components)]
+        return json
+    }
+}
+
 public class CRMappingContext {
     public var json: SwiftyJSON.JSON
     public var object: Mappable
@@ -54,10 +82,11 @@ public class CRMappingContext {
     public subscript(key: String) -> Map {
         
         let keyPath = key.componentsSeparatedByString(".").map { $0 as JSONSubscriptType }
-        return valueForKeyPathComponents(keyPath, dictionary: self.JSON) as! Map
+        return valueForKeyPathComponents(keyPath, dictionary: self.json) as! Map
     }
 }
 
+/// Global methods caller uses to perform mappings.
 public struct CRMapper<T: Mappable> {
     
     func mapFromJSONToObject(json: JSON) -> Result<Any> {
@@ -66,7 +95,7 @@ public struct CRMapper<T: Mappable> {
     }
     
     func mapFromJSON(json: JSON, var toObject object: T) -> Result<Any> {
-        let context = CRMappingContext(withObject: object, json: json, direction: MappingDirection.ToObject)
+        let context = CRMappingContext(withObject: object, json: json, direction: MappingDirection.FromJSON)
         object.mapping(context)
         return context.result!
     }
@@ -82,7 +111,7 @@ public struct CRMapper<T: Mappable> {
     }
     
     internal func getInstance() -> T {
-        // Find by foreignKeys else...
+        // TODO: Find by foreignKeys else...
         return T.newInstance() as! T
     }
 }
@@ -95,10 +124,10 @@ public protocol Mappable {
 
 struct User : Mappable {
     var derp: String
-    var blah: JSONSubscriptType
+    var blah: Int
     
     static func newInstance() -> Mappable {
-        return User(derp: "", blah: "")
+        return User(derp: "", blah: 0)
     }
     
     static func foreignKeys() -> Array<CRMappingKey> {
@@ -155,14 +184,12 @@ public final class Map : CRMappingKey {
     }
 }
 
-/// Fetch value from JSON dictionary, loop through them until we reach the desired object.
+/// Fetch value from JSON dictionary
 private func valueForKeyPathComponents(components: [ JSONSubscriptType ], dictionary: JSON) -> AnyObject {
 
     let json = dictionary[Array(components)]
     return json.rawValue
 }
-
-
 
 /// The Mapper class provides methods for converting Model objects to JSON and methods for converting JSON to Model objects
 public struct Mapper<N: Mappable> {

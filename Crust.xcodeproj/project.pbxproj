@@ -11,6 +11,7 @@
 		171D4A731B6D90B800CFCF25 /* CRMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171D4A721B6D90B800CFCF25 /* CRMapper.swift */; };
 		171D4A781B6D94A400CFCF25 /* MapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171D4A771B6D94A400CFCF25 /* MapperTests.swift */; };
 		171D4A7A1B6DB6D100CFCF25 /* MappingOperator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171D4A791B6DB6D100CFCF25 /* MappingOperator.swift */; };
+		171D4A7C1B76B45D00CFCF25 /* CRFromJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171D4A7B1B76B45D00CFCF25 /* CRFromJSON.swift */; };
 		268068E21B47080D0076C226 /* CRUberProductsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 268068E11B47080C0076C226 /* CRUberProductsRequest.swift */; };
 		26951C251AFB401A007B0E07 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26951C241AFB401A007B0E07 /* AppDelegate.swift */; };
 		26951C271AFB401A007B0E07 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26951C261AFB401A007B0E07 /* ViewController.swift */; };
@@ -36,6 +37,7 @@
 		171D4A721B6D90B800CFCF25 /* CRMapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CRMapper.swift; sourceTree = "<group>"; };
 		171D4A771B6D94A400CFCF25 /* MapperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapperTests.swift; sourceTree = "<group>"; };
 		171D4A791B6DB6D100CFCF25 /* MappingOperator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MappingOperator.swift; sourceTree = "<group>"; };
+		171D4A7B1B76B45D00CFCF25 /* CRFromJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CRFromJSON.swift; sourceTree = "<group>"; };
 		268068E11B47080C0076C226 /* CRUberProductsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CRUberProductsRequest.swift; sourceTree = "<group>"; };
 		26951C1F1AFB401A007B0E07 /* Crust.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Crust.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		26951C231AFB401A007B0E07 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -76,6 +78,7 @@
 			children = (
 				171D4A721B6D90B800CFCF25 /* CRMapper.swift */,
 				171D4A791B6DB6D100CFCF25 /* MappingOperator.swift */,
+				171D4A7B1B76B45D00CFCF25 /* CRFromJSON.swift */,
 			);
 			path = Mapper;
 			sourceTree = "<group>";
@@ -331,6 +334,7 @@
 				268068E21B47080D0076C226 /* CRUberProductsRequest.swift in Sources */,
 				26951C271AFB401A007B0E07 /* ViewController.swift in Sources */,
 				26951C251AFB401A007B0E07 /* AppDelegate.swift in Sources */,
+				171D4A7C1B76B45D00CFCF25 /* CRFromJSON.swift in Sources */,
 				171D4A7A1B6DB6D100CFCF25 /* MappingOperator.swift in Sources */,
 				171D4A731B6D90B800CFCF25 /* CRMapper.swift in Sources */,
 			);

@@ -22,12 +22,65 @@ infix operator <- { associativity right }
 // MARK:- Objects with Basic types
 
 /// Object of Basic type
-public func <- <T, C: CRMappingContext>(inout left: T, right:(map: CRMappingKey, context: C)) -> C {
-    switch right.context.dir {
-    case .FromJSON:
-        break
+public func <- <T: CRFieldType, C: CRMappingContext>(inout attribute: T, map:(key: CRMappingKey, context: C)) -> C {
+    
+    if case .Error(_)? = map.context.result {
+        return map.context
+    }
+    
+    switch map.context.dir {
     case .ToJSON:
         break
+    case .FromJSON:
+        let baseJSON = map.context.json[map.key]
+        map.context.result = mapFromJson(baseJSON, toField: &attribute)
+        break
+    }
+    
+    return map.context
+}
+
+func mapFromJson<T: CRFieldType>(json: JSON, inout toField field: T) -> Result<Any> {
+    
+    let error: NSError = NSError(domain: "CRMappingDomain", code: -1, userInfo: nil)
+    
+    switch field {
+    case is Int:
+        if let rawInt = json.number {
+            field = rawInt as! T
+        } else {
+            return Result.Error(error)
+        }
+    case is NSNumber:
+        if let rawNumber = json.number {
+            field = rawNumber as! T
+        } else {
+            return Result.Error(error)
+        }
+    case is String:
+        if let rawString = json.string {
+            field = rawString as! T
+        } else {
+            return Result.Error(error)
+        }
+    case is Double:
+        if let rawDouble = json.double {
+            field = rawDouble as! T
+        } else {
+            return Result.Error(error)
+        }
+    case is Array<CRFieldType>:
+        if let rawArray = json.array {
+            field = rawArray as! T
+        } else {
+            return Result.Error(error)
+        }
+    case is Dictionary<String, CRFieldType>:
+        if let rawDictionary = json.dictionary {
+            field = rawDictionary as! T
+        } else {
+            return Result.Error(error)
+        }
     }
 }
 

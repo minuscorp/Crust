@@ -1,13 +1,13 @@
 PODS:
-  - Alamofire (1.2.3)
+  - Alamofire (2.0.0-beta.1)
   - ObjectMapper (0.14)
-  - Runes (2.0.0)
+  - Runes (3.0.0-rc.1)
   - SwiftyJSON (2.2.1)
 
 DEPENDENCIES:
   - Alamofire (from `https://github.com/Alamofire/Alamofire.git`, branch `swift-2.0`)
   - ObjectMapper (from `https://github.com/Hearst-DD/ObjectMapper.git`, branch `swift-2.0`)
-  - Runes (from `https://github.com/thoughtbot/Runes.git`, branch `swift-2.0`)
+  - Runes (from `https://github.com/thoughtbot/Runes.git`)
   - SwiftyJSON (from `https://github.com/SwiftyJSON/SwiftyJSON.git`, branch `xcode7`)
 
 EXTERNAL SOURCES:
@@ -18,7 +18,6 @@ EXTERNAL SOURCES:
     :branch: swift-2.0
     :git: https://github.com/Hearst-DD/ObjectMapper.git
   Runes:
-    :branch: swift-2.0
     :git: https://github.com/thoughtbot/Runes.git
   SwiftyJSON:
     :branch: xcode7
@@ -26,22 +25,22 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Alamofire:
-    :commit: fd71afb3a0af2042b9f05a6b9f29317ad4903703
+    :commit: 8c0a49c20c6e9ddbf976cd6230fe8e148601fa1d
     :git: https://github.com/Alamofire/Alamofire.git
   ObjectMapper:
-    :commit: 7b6cb12d7fcbc19e944187cd27567f9767fa1ea3
+    :commit: 87180c69bf38ca3ca7955214bc4cacb45e859445
     :git: https://github.com/Hearst-DD/ObjectMapper.git
   Runes:
-    :commit: 057116afb8bf148d7c1bf5a057e476ea629d5bd1
+    :commit: 13fc6356b6d82d4cc68f8ca925a1c12bd19c3a1e
     :git: https://github.com/thoughtbot/Runes.git
   SwiftyJSON:
-    :commit: 838cba3f321f8075931e7eb40eae69e247cdbf12
+    :commit: 45ca854ce75948858f65e31fbc58cbf214669250
     :git: https://github.com/SwiftyJSON/SwiftyJSON.git
 
 SPEC CHECKSUMS:
-  Alamofire: 5550bf0b575ed1a4bf9be572f9463e1015cc169e
+  Alamofire: 96feccc1e48a735edb92395cf023ba4ed52bdb45
   ObjectMapper: 45b97fa0a68c3851daad3efca87bc6c1ab1718c0
-  Runes: 4fe81355f4620b76b02176222d264b33e60dba51
+  Runes: 0db8b934fa05b46cbb6cb3b3dbac2ff9c776a506
   SwiftyJSON: ae2d0a3d68025d136602a33c4ee215091ced3e33
 
 COCOAPODS: 0.38.2

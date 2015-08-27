@@ -6,6 +6,7 @@ pod 'Alamofire', :git => 'https://github.com/Alamofire/Alamofire.git', :branch =
 pod 'SwiftyJSON', :git => 'https://github.com/SwiftyJSON/SwiftyJSON.git', :branch => 'xcode7'
 pod 'ObjectMapper', :git => 'https://github.com/Hearst-DD/ObjectMapper.git', :branch => 'swift-2.0'
 pod 'Runes', :git => 'https://github.com/thoughtbot/Runes.git' 
+pod 'Swiftz', :podspec => 'podspecs/Swiftz.podspec'
 
 target 'Crust' do
 end

@@ -1,5 +1,5 @@
-import SwiftyJSON
 import Runes
+import Swiftz
 
 /**
 * This file defines a new operator which is used to create a mapping between an object and a JSON key value.
@@ -48,61 +48,27 @@ public func <- <T: CRFieldType, C: CRMappingContext>(inout field: T, map:(key: C
     return map.context
 }
 
-func mapToJson<T: CRFieldType>(var json: JSON, fromField field: T, viaKey key: CRMappingKey) -> Result<JSON> {
+func mapToJson<T: JSON>(var json: JSONValue, fromField field: T, viaKey key: CRMappingKey) -> Result<JSONValue> {
     
-    print(key)
-    json[key] = [ " fuck", " you" ]
-    print(json)
+//    print(key)
+//    json[key] = [ " fuck", " you" ]
+//    print(json)
     
-    let result = field.asJSON()
+    let result = T.toJSON(field)
     switch result {
     case .Value(let val):
+        
+        switch val {
+        case .JSONObject(let obj):
+            break
+        default:
+            
+        }
         json[key] = val
+        return Result.Value(json)
     case .Error(_):
         return result
     }
-    print(field)
-    
-    switch field {
-    case is Bool:
-        json[key] = JSON(field as! Bool)
-    case is Int:
-        json[key] = JSON(field as! Int)
-    case is NSNumber:
-        json[key] = JSON(field as! NSNumber)
-    case is String:
-        json[key] = JSON(field as! String)
-    case is Float:
-        json[key] = JSON(field as! Float)
-    case is Double:
-        json[key] = JSON(field as! Double)
-    case is Array<Any>:
-        let result = field.asJSON()
-        switch result {
-        case .Value(let val):
-            json[key] = val
-        case .Error(_):
-            return result
-        }
-        print(field)
-        break
-    case is Dictionary<String, CRFieldType>:
-        // TODO: Iterate through each element and wrap as JSON and add to our json.
-//        json[key] = JSON(field as! Dictionary)
-        print(field)
-        break
-    default:
-        print("fuck")
-        print(field)
-        break
-    }
-    
-    if let error = json.error {
-        // TODO: Wrap this error in our own error.
-        return Result.Error(error)
-    }
-    
-    return Result.Value(json)
 }
 
 /// Map to JSON with field as optional type.
@@ -121,10 +87,6 @@ func mapFromJson<T: CRFieldType>(json: JSON, inout toField field: T) -> Result<A
     
     // TODO: Clarify our errors.
     let error: NSError = NSError(domain: "CRMappingDomain", code: -1, userInfo: nil)
-    
-    if case .Unknown = json.type {
-        return Result.Error(error)
-    }
     
     switch field {
     case is Bool:

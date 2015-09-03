@@ -2,14 +2,12 @@ PODS:
   - Alamofire (2.0.0-beta.3)
   - ObjectMapper (0.15)
   - Runes (3.0.0-rc.1)
-  - SwiftyJSON (2.2.1)
   - Swiftz (0.2.4)
 
 DEPENDENCIES:
   - Alamofire (from `https://github.com/Alamofire/Alamofire.git`, branch `swift-2.0`)
   - ObjectMapper (from `https://github.com/Hearst-DD/ObjectMapper.git`, branch `swift-2.0`)
   - Runes (from `https://github.com/thoughtbot/Runes.git`)
-  - SwiftyJSON (from `https://github.com/SwiftyJSON/SwiftyJSON.git`, branch `xcode7`)
   - Swiftz (from `podspecs/Swiftz.podspec`)
 
 EXTERNAL SOURCES:
@@ -21,9 +19,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/Hearst-DD/ObjectMapper.git
   Runes:
     :git: https://github.com/thoughtbot/Runes.git
-  SwiftyJSON:
-    :branch: xcode7
-    :git: https://github.com/SwiftyJSON/SwiftyJSON.git
   Swiftz:
     :podspec: podspecs/Swiftz.podspec
 
@@ -37,9 +32,6 @@ CHECKOUT OPTIONS:
   Runes:
     :commit: 3cba8a218a37a31d7ccc11d0ddd13d9c7b1cd0ec
     :git: https://github.com/thoughtbot/Runes.git
-  SwiftyJSON:
-    :commit: f269523ac572979245baa99c8475eab73caf1e9b
-    :git: https://github.com/SwiftyJSON/SwiftyJSON.git
   Swiftz:
     :commit: dd542dd8c02c82be04aae1d14655c77dd2bc0d05
     :git: https://github.com/typelift/Swiftz.git
@@ -48,7 +40,6 @@ SPEC CHECKSUMS:
   Alamofire: 39dddb7d3725d1771b1d2f7099c8bd45bd83ffbb
   ObjectMapper: 0656dc1c155825897e5acfcd25362c6b61786dcb
   Runes: 0db8b934fa05b46cbb6cb3b3dbac2ff9c776a506
-  SwiftyJSON: ae2d0a3d68025d136602a33c4ee215091ced3e33
   Swiftz: 478587bdf9a3c0581c11a7941dbd8263b62de88d
 
 COCOAPODS: 0.38.2

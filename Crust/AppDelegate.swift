@@ -1,5 +1,4 @@
 import UIKit
-import SwiftyJSON
 
 private let kDefaultLatitude = 37.775
 private let kDefaultLongitude = -122.0

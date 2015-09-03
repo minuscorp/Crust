@@ -55,13 +55,11 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework 'Pods/Alamofire.framework'
   install_framework 'Pods/ObjectMapper.framework'
   install_framework 'Pods/Runes.framework'
-  install_framework 'Pods/SwiftyJSON.framework'
   install_framework 'Pods/Swiftz.framework'
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework 'Pods/Alamofire.framework'
   install_framework 'Pods/ObjectMapper.framework'
   install_framework 'Pods/Runes.framework'
-  install_framework 'Pods/SwiftyJSON.framework'
   install_framework 'Pods/Swiftz.framework'
 fi

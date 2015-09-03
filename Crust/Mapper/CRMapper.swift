@@ -1,5 +1,5 @@
-import SwiftyJSON
 import Runes
+import Swiftz
 
 public enum Result<T> {
     case Value(T)
@@ -15,154 +15,87 @@ public protocol CRMappingKey {
     var keyPath: String { get }
 }
 
-public protocol CRFieldType {
-    func asJSON() -> Result<JSON>
-}
+//public protocol CRFieldType : JSON {
+//    func asJSON() -> Result<JSONValue>
+//}
 
-public protocol CRFieldCollection: CRFieldType, CollectionType {
-}
-
-extension CRFieldCollection {
+extension Dictionary where Key : String, Value : JSON, Value.J == Value {
     
-}
-
-extension Bool : CRFieldType {
-    public func asJSON() -> Result<JSON> {
-        return Result.Value(JSON(self))
-    }
-}
-
-extension NSNumber : CRFieldType {
-    public func asJSON() -> Result<JSON> {
-        return Result.Value(JSON(self))
-    }
-}
-
-extension NSNull : CRFieldType {
-    public func asJSON() -> Result<JSON> {
-        return Result.Value(JSON(self))
-    }
-}
-
-extension Dictionary : CRFieldType {
-    public func asJSON() -> Result<JSON> {
-        return dictionaryAsJSON(self)
+    public static func toJSON(x: Dictionary<Key, Value>) -> JSONValue {
+        return JDictionary<Value, Value>.toJSON(x)
     }
     
-    func dictionaryAsJSON<T: CRFieldType>(dictionary: T) -> Result<JSON> {
-        switch dictionary {
-        case is Dictionary<String, CRFieldType>:
-            return Result.Value(JSON(NSNull)) // TODO:
-        default:
-            return Result.Error(NSError(domain: "", code: 0, userInfo: nil))
+    public static func fromJSON(x: JSONValue) -> Dictionary<Key, Value>? {
+        return JDictionary<Value, Value>.fromJSON(x)
+    }
+}
+
+extension Set where Element : JSON, Element.J == Element {
+    
+    public static func toJSON(x: Set<Element>) -> JSONValue {
+        let array = Array(x)
+        return JArray<Element, Element>.toJSON(array)
+    }
+    
+    public static func fromJSON(x: JSONValue) -> Set<Element>? {
+        if let array = JArray<Element, Element>.fromJSON(x) {
+            return Set(array)
+        } else {
+            return nil
         }
     }
 }
 
-extension Set : CRFieldType {
-    public func asJSON() -> Result<JSON> {
-        return Result.Error(NSError(domain: "", code: 0, userInfo: nil))
+extension Array where Element : JSON, Element.J == Element {
+    
+    public static func toJSON(x: Array<Element>) -> JSONValue {
+        return JArray<Element, Element>.toJSON(x)
+    }
+    
+    public static func fromJSON(x: JSONValue) -> Array? {
+        return JArray<Element, Element>.fromJSON(x)
     }
 }
 
-extension Array : CRFieldType {
-    public func asJSON() -> Result<JSON> {
-        
-        switch Element.self {
-        case is CRFieldType.Type:
-            
-            var resultArray = Array<JSON>()
-            
-            for val in self {
-                let val = val as! CRFieldType
-                let result = val.asJSON()
-                
-                switch result {
-                case .Value(let val):
-                    print(val)
-                    resultArray.append(val)
-                    print(resultArray)
-                case .Error(_):
-                    return result
-                }
-            }
-            print(resultArray)
-            return Result.Value(JSON(resultArray))
-            
-        default:
-            return Result.Error(NSError(domain: "", code: 0, userInfo: nil))
-        }
-    }
-    
-    // Type constraints on generics aren't very elaborate in swift yet.
-    // Can't express Array<CRFieldType>: CRFieldType so need to handle the general case.
-    // Covers our default case of any array.
-    func jsonConversion<T>(array: T) -> Result<JSON> {
-        
-        return Result.Error(NSError(domain: "", code: 0, userInfo: nil))
-        
-//        switch array {
-//        case is Array<NSNumber>:
-//            return jsonConversion(array as! Array<CRFieldType>)
-//        case is Array<Bool>:
-//            return jsonConversion(array as! Array<CRFieldType>)
-//        case is Array<Int>:
-//            return jsonConversion(array as! Array<CRFieldType>)
-//        case is Array<Double>:
-//            return jsonConversion(array as! Array<CRFieldType>)
-//        case is Array<Float>:
-//            return jsonConversion(array as! Array<CRFieldType>)
-//        case is Array<String>:
-//            return jsonConversion(array as! Array<CRFieldType>)
-//        case is Array<CRFieldType>:
-//            return jsonConversion(array as! Array<CRFieldType>)
+//extension Array : CRFieldType {
+//    public func asJSON() -> Result<JSONValue> {
+//        
+//        switch Element.self {
+//        case is CRFieldType.Type:
+//            
+//            var resultArray = Array<JSONValue>()
+//            
+//            for val in self {
+//                let val = val as! CRFieldType
+//                let result = val.asJSON()
+//                
+//                switch result {
+//                case .Value(let val):
+//                    print(val)
+//                    resultArray.append(val)
+//                    print(resultArray)
+//                case .Error(_):
+//                    return result
+//                }
+//            }
+//            print(resultArray)
+//            return Result.Value(JSONValue.JSONArray(resultArray))
+//            
 //        default:
 //            return Result.Error(NSError(domain: "", code: 0, userInfo: nil))
 //        }
-    }
-    
-    func jsonConversion(array: Array<CRFieldType>) -> Result<JSON> {
-        var resultArray = Array<JSON>()
-        for val in array {
-            let result = val.asJSON()
-            switch result {
-            case .Value(let val):
-                resultArray.append(val)
-            case .Error(_):
-                return result
-            }
-        }
-        return Result.Value(JSON(resultArray))
-    }
-}
+//    }
+//}
 
-extension Float : CRFieldType {
-    public func asJSON() -> Result<JSON> {
-        return Result.Value(JSON(self))
-    }
-}
-
-extension Double : CRFieldType {
-    public func asJSON() -> Result<JSON> {
-        return Result.Value(JSON(self))
-    }
-}
-
-extension Int : CRMappingKey, CRFieldType {
+extension Int : CRMappingKey {
     public var keyPath: String {
         return String(self)
     }
-    public func asJSON() -> Result<JSON> {
-        return Result.Value(JSON(self))
-    }
 }
 
-extension String : CRMappingKey, CRFieldType {
+extension String : CRMappingKey {
     public var keyPath: String {
         return self
-    }
-    public func asJSON() -> Result<JSON> {
-        return Result.Value(JSON(self))
     }
 }
 
@@ -182,27 +115,30 @@ public enum CRMapping : CRMappingKey {
     }
 }
 
-extension JSON {
-    subscript(key: CRMappingKey) -> JSON {
-        get {
-            let components = key.keyPath.componentsSeparatedByString(".").map { $0 as JSONSubscriptType }
-            let json = self[Array(components)]
-            return json
-        }
-        set {
-            let components = key.keyPath.componentsSeparatedByString(".").map { $0 as JSONSubscriptType }
-            self[Array(components)] = newValue
-        }
-    }
-}
+//extension JSONValue {
+//    subscript(key: CRMappingKey) -> JSONValue? {
+//        get {
+//            let components = key.keyPath.componentsSeparatedByString(".")
+//            let value: JSONValue? = (self <? JSONKeypath.init(components))
+//            return self <? JSONKeypath.init(components)
+////            let components = key.keyPath.componentsSeparatedByString(".").map { $0 as JSONSubscriptType }
+////            let json = self[Array(components)]
+////            return json
+//        }
+//        set {
+//            let components = key.keyPath.componentsSeparatedByString(".").map { $0 as JSONSubscriptType }
+//            self[Array(components)] = newValue
+//        }
+//    }
+//}
 
 public class CRMappingContext {
-    public var json: SwiftyJSON.JSON
+    public var json: JSONValue
     public var object: Mappable
     public var dir: MappingDirection
     public var result: Result<Any>?
     
-    init(withObject object:Mappable, json: JSON, direction: MappingDirection) {
+    init(withObject object:Mappable, json: JSONValue, direction: MappingDirection) {
         self.dir = direction
         self.object = object
         self.json = json
@@ -212,19 +148,19 @@ public class CRMappingContext {
 /// Global methods caller uses to perform mappings.
 public struct CRMapper<T: Mappable> {
     
-    func mapFromJSONToObject(json: JSON) -> Result<Any> {
+    func mapFromJSONToObject(json: JSONValue) -> Result<Any> {
         let object = getInstance()
         return mapFromJSON(json, toObject: object)
     }
     
-    func mapFromJSON(json: JSON, var toObject object: T) -> Result<Any> {
+    func mapFromJSON(json: JSONValue, var toObject object: T) -> Result<Any> {
         let context = CRMappingContext(withObject: object, json: json, direction: MappingDirection.FromJSON)
         object.mapping(context)
         return context.result!
     }
     
     func mapFromObjectToJSON(object: T) -> Result<Any> {
-        let context = CRMappingContext(withObject: object, json: JSON([:]), direction: MappingDirection.ToJSON)
+        let context = CRMappingContext(withObject: object, json: JSONValue.JSONObject([:]), direction: MappingDirection.ToJSON)
         return performMappingWithObject(object, context: context)
     }
     
@@ -239,14 +175,8 @@ public struct CRMapper<T: Mappable> {
     }
 }
 
-public protocol Mappable : CRFieldType {
-    static func newInstance() -> Mappable
+public protocol Mappable : JSON {
+    static func newInstance() -> J
     static func foreignKeys() -> Array<CRMappingKey>
     mutating func mapping(context: CRMappingContext)
-}
-
-extension Mappable {
-    public func asJSON() -> Result<JSON> {
-        return Result.Value(JSON(NSNull)) // TODO:
-    }
 }

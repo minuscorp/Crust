@@ -17,3 +17,18 @@ struct User : Mappable {
         context
     }
 }
+
+protocol Adaptor {
+    func fetchObjectForForeignKeys(keys: Array<CRMappingKey>) -> Mappable
+    func deleteObject<T: Mappable>(obj: T)
+}
+
+protocol Mapping {
+    var adaptor: Adaptor { get }
+    
+    func foreignKeys() -> Array<CRMappingKey>
+    mutating func mapping<T: Mappable>(tomap: T, context: CRMappingContext)
+}
+
+// Have something along the lines of.
+// func registerMapping(mapping: Mapping, forPath path: URLPath)

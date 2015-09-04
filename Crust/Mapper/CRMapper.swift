@@ -46,13 +46,28 @@ extension Set where Element : JSON, Element.J == Element {
     }
 }
 
-extension Array where Element : JSON, Element.J == Element {
+extension Array : JSON {
     
-    public static func toJSON(x: Array<Element>) -> JSONValue {
-        return JArray<Element, Element>.toJSON(x)
+    public static func toJSON(x: Array) -> JSONValue {
+        return self.toJSON(self)
     }
     
     public static func fromJSON(x: JSONValue) -> Array? {
+        <#code#>
+    }
+    
+    func toJSON<T: JSON>(x: Array<T>) -> JSONValue {
+        
+    }
+}
+
+extension Array where Element : JSON, Element.J == Element {
+    
+    public func toJSON(x: Array<Element>) -> JSONValue {
+        return JArray<Element, Element>.toJSON(x)
+    }
+    
+    public func fromJSON(x: JSONValue) -> Array? {
         return JArray<Element, Element>.fromJSON(x)
     }
 }
@@ -175,8 +190,8 @@ public struct CRMapper<T: Mappable> {
     }
 }
 
-public protocol Mappable : JSON {
-    static func newInstance() -> J
+public protocol Mappable  {
+    static func newInstance() -> Mappable
     static func foreignKeys() -> Array<CRMappingKey>
     mutating func mapping(context: CRMappingContext)
 }

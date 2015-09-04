@@ -72,7 +72,7 @@ func mapToJson<T: JSON>(var json: JSONValue, fromField field: T, viaKey key: CRM
 }
 
 /// Map to JSON with field as optional type.
-func mapToJson<T: CRFieldType>(var json: JSON, fromField field: T?, viaKey key: CRMappingKey) -> Result<JSON> {
+func mapToJson<T: JSON>(var json: JSONValue, fromField field: T?, viaKey key: CRMappingKey) -> Result<JSONValue> {
     
     if let field = field {
         return mapToJson(json, fromField: field, viaKey: key)
@@ -83,10 +83,16 @@ func mapToJson<T: CRFieldType>(var json: JSON, fromField field: T?, viaKey key: 
 }
 
 // TODO: Have a map for optional fields. .Null will map to `nil`.
-func mapFromJson<T: CRFieldType>(json: JSON, inout toField field: T) -> Result<Any>? {
+func mapFromJson<T: JSON>(json: JSONValue, inout toField field: T) -> Result<Any>? {
     
     // TODO: Clarify our errors.
     let error: NSError = NSError(domain: "CRMappingDomain", code: -1, userInfo: nil)
+    
+    if let fromJson = T.fromJSON(json) {
+        field = fromJson as! T
+    } else {
+        
+    }
     
     switch field {
     case is Bool:

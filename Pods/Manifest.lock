@@ -1,17 +1,14 @@
 PODS:
-  - Alamofire (2.0.0-beta.3)
+  - Alamofire (2.0.1)
   - ObjectMapper (0.15)
   - Swiftz (0.2.4)
 
 DEPENDENCIES:
-  - Alamofire (from `https://github.com/Alamofire/Alamofire.git`, branch `swift-2.0`)
+  - Alamofire
   - ObjectMapper (from `https://github.com/Hearst-DD/ObjectMapper.git`, branch `swift-2.0`)
   - Swiftz (from `podspecs/Swiftz.podspec`)
 
 EXTERNAL SOURCES:
-  Alamofire:
-    :branch: swift-2.0
-    :git: https://github.com/Alamofire/Alamofire.git
   ObjectMapper:
     :branch: swift-2.0
     :git: https://github.com/Hearst-DD/ObjectMapper.git
@@ -19,9 +16,6 @@ EXTERNAL SOURCES:
     :podspec: podspecs/Swiftz.podspec
 
 CHECKOUT OPTIONS:
-  Alamofire:
-    :commit: 0fd77fec2a33e237ab99069c36410eb7101126c6
-    :git: https://github.com/Alamofire/Alamofire.git
   ObjectMapper:
     :commit: 313328bfbcc27476fdb44cea9bad6eaa38008455
     :git: https://github.com/Hearst-DD/ObjectMapper.git
@@ -30,7 +24,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/typelift/Swiftz.git
 
 SPEC CHECKSUMS:
-  Alamofire: 39dddb7d3725d1771b1d2f7099c8bd45bd83ffbb
+  Alamofire: 1d8e208d616fbbfd2391b15eae766d07c96cdc49
   ObjectMapper: 0656dc1c155825897e5acfcd25362c6b61786dcb
   Swiftz: 478587bdf9a3c0581c11a7941dbd8263b62de88d
 

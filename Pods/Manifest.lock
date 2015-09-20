@@ -1,13 +1,11 @@
 PODS:
   - Alamofire (2.0.0-beta.3)
   - ObjectMapper (0.15)
-  - Runes (3.0.0-rc.1)
   - Swiftz (0.2.4)
 
 DEPENDENCIES:
   - Alamofire (from `https://github.com/Alamofire/Alamofire.git`, branch `swift-2.0`)
   - ObjectMapper (from `https://github.com/Hearst-DD/ObjectMapper.git`, branch `swift-2.0`)
-  - Runes (from `https://github.com/thoughtbot/Runes.git`)
   - Swiftz (from `podspecs/Swiftz.podspec`)
 
 EXTERNAL SOURCES:
@@ -17,8 +15,6 @@ EXTERNAL SOURCES:
   ObjectMapper:
     :branch: swift-2.0
     :git: https://github.com/Hearst-DD/ObjectMapper.git
-  Runes:
-    :git: https://github.com/thoughtbot/Runes.git
   Swiftz:
     :podspec: podspecs/Swiftz.podspec
 
@@ -29,9 +25,6 @@ CHECKOUT OPTIONS:
   ObjectMapper:
     :commit: 313328bfbcc27476fdb44cea9bad6eaa38008455
     :git: https://github.com/Hearst-DD/ObjectMapper.git
-  Runes:
-    :commit: 3cba8a218a37a31d7ccc11d0ddd13d9c7b1cd0ec
-    :git: https://github.com/thoughtbot/Runes.git
   Swiftz:
     :commit: dd542dd8c02c82be04aae1d14655c77dd2bc0d05
     :git: https://github.com/typelift/Swiftz.git
@@ -39,7 +32,6 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Alamofire: 39dddb7d3725d1771b1d2f7099c8bd45bd83ffbb
   ObjectMapper: 0656dc1c155825897e5acfcd25362c6b61786dcb
-  Runes: 0db8b934fa05b46cbb6cb3b3dbac2ff9c776a506
   Swiftz: 478587bdf9a3c0581c11a7941dbd8263b62de88d
 
 COCOAPODS: 0.38.2

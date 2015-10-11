@@ -1,11 +1,4 @@
-//
-//  ObjectUtilities.swift
-//  Crust
-//
-//  Created by Rex Fenley on 10/8/15.
-//  Copyright © 2015 Lucas Swift. All rights reserved.
-//
-
+import CoreData
 import Foundation
 
 
@@ -32,6 +25,37 @@ import Foundation
 //#import <objc/message.h>
 //#import <objc/runtime.h>
 
+let _C_ID: Character =       "@"
+let _C_CLASS: Character =    "#"
+let _C_SEL: Character =      ":"
+let _C_CHR: Character =      "c"
+let _C_UCHR: Character =     "C"
+let _C_SHT: Character =      "s"
+let _C_USHT: Character =     "S"
+let _C_INT: Character =      "i"
+let _C_UINT: Character =     "I"
+let _C_LNG: Character =      "l"
+let _C_ULNG: Character =     "L"
+let _C_LNG_LNG: Character =  "q"
+let _C_ULNG_LNG: Character = "Q"
+let _C_FLT: Character =      "f"
+let _C_DBL: Character =      "d"
+let _C_BFLD: Character =     "b"
+let _C_BOOL: Character =     "B"
+let _C_VOID: Character =     "v"
+let _C_UNDEF: Character =    "?"
+let _C_PTR: Character =      "^"
+let _C_CHARPTR: Character =  "*"
+let _C_ATOM: Character =     "%"
+let _C_ARY_B: Character =    "["
+let _C_ARY_E: Character =    "]"
+let _C_UNION_B: Character =  "("
+let _C_UNION_E: Character =  ")"
+let _C_STRUCT_B: Character = "{"
+let _C_STRUCT_E: Character = "}"
+let _C_VECTOR: Character =   "!"
+let _C_CONST: Character =    "r"
+
 func classIsNSCollection(aClass: AnyObject.Type) -> Bool {
     return aClass == NSSet.self || aClass == NSArray.self || aClass == NSOrderedSet.self
 }
@@ -40,65 +64,74 @@ func objectIsNSCollection(object: AnyObject) -> Bool {
     return classIsNSCollection(object.dynamicType)
 }
 
-BOOL RKObjectIsCollectionContainingOnlyManagedObjects(id object)
-{
-    if (! RKObjectIsCollection(object)) return NO;
-    Class managedObjectClass = NSClassFromString(@"NSManagedObject");
-    if (! managedObjectClass) return NO;
-    for (id instance in object) {
-        if (! [instance isKindOfClass:managedObjectClass]) return NO;
+func objectIsNSCollectionContainingOnlyManagedObjects(object: AnyObject) -> Bool {
+    if !objectIsNSCollection(object) {
+        return false
     }
-    return YES;
+    
+    for subobject in (object as SequenceType) {
+        if NSManagedObject.self != subobject.dynamictype {
+            return false
+        }
+    }
+    
+    return true
 }
 
-BOOL RKObjectIsCollectionOfCollections(id object)
-{
-    if (! RKObjectIsCollection(object)) return NO;
-    id collectionSanityCheckObject = nil;
-    if ([object respondsToSelector:@selector(anyObject)]) collectionSanityCheckObject = [object anyObject];
-    if ([object respondsToSelector:@selector(lastObject)]) collectionSanityCheckObject = [object lastObject];
-    return RKObjectIsCollection(collectionSanityCheckObject);
+func objectIsNSCollectionOfNSCollections(object: AnyObject) -> Bool {
+    if !objectIsNSCollection(object) {
+        return false
+    }
+    
+    var sanityCheck: AnyObject? = nil
+    if object.respondsToSelector(Selector("anyObject")) {
+        sanityCheck = object.anyObject()
+    }
+    if object.respondsToSelector(Selector("lastObject")) {
+        sanityCheck = object.lastObject()
+    }
+    return objectIsNSCollection(sanityCheck)
 }
 
-Class RKKeyValueCodingClassForObjCType(const char *type)
-{
-    if (type) {
+func keyValueCodingClassForObjCType(type: [Character]) -> AnyObject.Type {
+    if (type.count > 0) {
         switch (type[0]) {
         case _C_ID: {
-            char *openingQuoteLoc = strchr(type, '"');
-                if (openingQuoteLoc) {
-                char *closingQuoteLoc = strchr(openingQuoteLoc+1, '"');
+            let data = (String(type) as NSString).UTF8String
+            let openingQuoteLoc = strchr(data, "\"")
+            if (openingQuoteLoc) {
+                let closingQuoteLoc = strchr(openingQuoteLoc + 1, "\"");
                 if (closingQuoteLoc) {
-                size_t classNameStrLen = closingQuoteLoc-openingQuoteLoc;
-                char className[classNameStrLen];
-                memcpy(className, openingQuoteLoc+1, classNameStrLen-1);
-                // Null-terminate the array to stringify
-                className[classNameStrLen-1] = '\0';
-                return objc_getClass(className);
+                    let classNameStrLen = closingQuoteLoc - openingQuoteLoc;
+                    let className[classNameStrLen];
+                    memcpy(className, openingQuoteLoc+1, classNameStrLen - 1);
+                    // Null-terminate the array to stringify
+                    className[classNameStrLen - 1] = "\0";
+                    objc_getClass(className);
+                }
             }
-        }
         // If there is no quoted class type (id), it can be used as-is.
         return Nil;
         }
         
-        case _C_CHR: // char
-        case _C_UCHR: // unsigned char
-        case _C_SHT: // short
-        case _C_USHT: // unsigned short
-        case _C_INT: // int
-        case _C_UINT: // unsigned int
-        case _C_LNG: // long
-        case _C_ULNG: // unsigned long
-        case _C_LNG_LNG: // long long
-        case _C_ULNG_LNG: // unsigned long long
-        case _C_FLT: // float
+        case _C_CHR: fallthrough // char
+        case _C_UCHR: fallthrough // unsigned char
+        case _C_SHT: fallthrough // short
+        case _C_USHT: fallthrough // unsigned short
+        case _C_INT: fallthrough // int
+        case _C_UINT: fallthrough // unsigned int
+        case _C_LNG: fallthrough // long
+        case _C_ULNG: fallthrough // unsigned long
+        case _C_LNG_LNG: fallthrough // long long
+        case _C_ULNG_LNG: fallthrough // unsigned long long
+        case _C_FLT: fallthrough // float
         case _C_DBL: // double
         return [NSNumber class];
         
         case _C_BOOL: // C++ bool or C99 _Bool
-        return objc_getClass("NSCFBoolean")
-        ?: objc_getClass("__NSCFBoolean")
-        ?: [NSNumber class];
+            return objc_getClass("NSCFBoolean")
+            ?: objc_getClass("__NSCFBoolean")
+            ?: [NSNumber class];
         
         case _C_STRUCT_B: // struct
         case _C_BFLD: // bitfield
@@ -116,7 +149,7 @@ Class RKKeyValueCodingClassForObjCType(const char *type)
         break;
     }
 }
-return Nil;
+return nil;
 }
 
 Class RKKeyValueCodingClassFromPropertyAttributes(const char *attr)
